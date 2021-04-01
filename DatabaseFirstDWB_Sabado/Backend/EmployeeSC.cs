@@ -1,4 +1,5 @@
 ﻿using DatabaseFirstDWB_Sabado.DataAccess;
+using DatabaseFirstDWB_Sabado.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,25 @@ namespace DatabaseFirstDWB_Sabado.Backend
 {
     public class EmployeeSC : BaseSC
     {
-       
 
+        //GET
         public Employee GetEmployeeById(int id)
         {
-            return GetAllEmployees().Where(w => w.EmployeeId == id).FirstOrDefault();
+            var employee = GetAllEmployees().Where(w => w.EmployeeId == id).FirstOrDefault();
+
+            if (employee == null)
+                throw new Exception("El id solicitado para el empleado que quieres obtener, no existe");
+
+            return employee;
         }
 
+        //GET
         public IQueryable<Employee> GetAllEmployees()
         {
             return dataContext.Employees.Select(s => s);
         }
 
+        //DELETE
         public void DeleteEmployeeById(int id)
         {
             var employee = GetEmployeeById(id);
@@ -37,6 +45,23 @@ namespace DatabaseFirstDWB_Sabado.Backend
 
             currentEmployee.FirstName = newName;
             dataContext.SaveChanges();
+        }
+
+
+        public void AddEmployee(EmployeeModel newEmployee)
+        {
+            // notación parecida a JSON
+            var newEmployeeRegister = new Employee()
+            {
+                FirstName = newEmployee.Name,
+                LastName = newEmployee.FamilyName
+            };
+
+
+            dataContext.Employees.Add(newEmployeeRegister);
+            dataContext.SaveChanges();
+
+
         }
 
     }

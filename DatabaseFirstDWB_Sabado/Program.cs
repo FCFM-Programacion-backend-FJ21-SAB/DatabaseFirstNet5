@@ -98,7 +98,7 @@ namespace DatabaseFirstDWB_Sabado
             Excercise4();
             Excercise5();
             Excercise6();
-            Excersice7();
+            Excersice7(); 
             //
 
             Console.WriteLine("Hello World!");
